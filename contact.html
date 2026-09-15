@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get in touch — Your Name</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="index.html" class="name">Your Name</a>
+  <nav aria-label="Section navigation">
+    <ul>
+      <li><a href="about.html">About</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html" class="current">Get in touch</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="page-main">
+  <h1>Get in touch</h1>
+  <p class="lede">Have a project in mind or just want to say hello? Send a message.</p>
+
+  <form class="contact-form" action="mailto:you@example.com" method="post" enctype="text/plain">
+    <div>
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required></textarea>
+    </div>
+    <button type="submit">Send message</button>
+  </form>
+
+  <div class="contact-links">
+    <a href="mailto:you@example.com">you@example.com</a>
+    <a href="https://www.linkedin.com/in/yourprofile">LinkedIn</a>
+    <a href="https://github.com/yourusername">GitHub</a>
+  </div>
+</main>
+
+<footer class="page-footer">
+  <p>&copy; 2026 Your Name</p>
+</footer>
+
+</body>
+</html>
