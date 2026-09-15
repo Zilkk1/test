@@ -3,11 +3,11 @@
 }
 
 ::view-transition-old(root) {
-  animation: page-fade-out 0.25s ease forwards;
+  animation: page-fade-out 0.5s ease forwards;
 }
 
 ::view-transition-new(root) {
-  animation: page-fade-in 0.35s ease forwards;
+  animation: page-fade-in 0.5s ease forwards;
 }
 
 @keyframes page-fade-out {
