@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connor Athanasellis — Mechanical Engineering Student</title>
+<meta name="description" content="Connor Athanasellis: Mechanical Engineering (Honours) student specialising in parametric CAD, FEA validation, and rapid prototyping.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A1A20">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0A1A20;
+  --surface: #0E232B;
+  --surface-2: #132E38;
+  --border: #1F3B46;
+  --text: #E4EEF0;
+  --muted: #8DA6AD;
+  --accent: #F2C14E;
+  --accent-ink: #0A1A20;
+  --glow: rgba(242, 193, 78, 0.13);
+  --grid: rgba(228, 238, 240, 0.045);
+  --hot: rgba(242, 193, 78, 0.4);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --display: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --max: 1200px;
+  --pad: clamp(20px, 5vw, 48px);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: var(--sans); font-size: 1rem; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 100;
+  background: var(--accent); color: var(--accent-ink);
+  padding: 8px 14px; border-radius: 6px; font-weight: 500;
+}
+.skip:focus { top: 12px; }
+.wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--pad); }
+.u { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.4s var(--ease); }
+.u:hover { background-size: 100% 1px; }
+
+#progress {
+  position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 60;
+  background: var(--accent); transform: scaleX(0); transform-origin: 0 50%;
+}
+
+.nav {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+.brand { font-family: var(--display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.01em; }
+.links { display: flex; gap: clamp(12px, 2.6vw, 28px); list-style: none; margin: 0; padding: 0; font-size: 0.875rem; color: var(--muted); }
+.links a { position: relative; display: block; padding: 6px 0; transition: color 0.25s; white-space: nowrap; }
+.links a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--accent); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform 0.35s var(--ease);
+}
+.links a:hover, .links a[aria-current="true"] { color: var(--text); }
+.links a:hover::after, .links a[aria-current="true"]::after { transform: scaleX(1); }
+
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: calc(100vh - 60px); min-height: calc(100svh - 60px);
+  display: flex; align-items: flex-end; --mx: 72%; --my: 30%;
+}
+.hero-grid, .hero-hot, .hero-glow { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+.hero-grid {
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, #000 25%, transparent 82%);
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, #000 25%, transparent 82%);
+}
+.hero-hot {
+  background-image: linear-gradient(var(--hot) 1px, transparent 1px), linear-gradient(90deg, var(--hot) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx) var(--my), #000, transparent 72%);
+  mask-image: radial-gradient(240px circle at var(--mx) var(--my), #000, transparent 72%);
+  opacity: 0; transition: opacity 0.4s;
+}
+.hero-glow { background: radial-gradient(460px circle at var(--mx) var(--my), var(--glow), transparent 70%); opacity: 0.7; transition: opacity 0.4s; }
+.hero.hot .hero-hot, .hero.hot .hero-glow { opacity: 1; }
+.hero .wrap { width: 100%; padding-block: clamp(56px, 12vh, 112px) clamp(48px, 9vh, 96px); }
+
+.status { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; font-size: 0.9375rem; color: var(--muted); }
+.status i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.name { margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 9.5vw, 7rem); line-height: 0.98; letter-spacing: -0.04em; }
+.name .line { display: block; overflow: hidden; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+.name .ch { display: inline-block; }
+.js .name .ch { transform: translateY(108%); animation: rise 0.9s var(--ease) forwards; animation-delay: calc(var(--i) * 32ms + 120ms); }
+@keyframes rise { to { transform: none; } }
+.lede { max-width: 36rem; margin: 26px 0 0; font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--muted); }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+.btn {
+  display: inline-flex; align-items: center; padding: 12px 22px; border-radius: 999px;
+  font-weight: 500; font-size: 0.9375rem; border: 1px solid var(--border);
+  transition: transform 0.3s var(--ease), border-color 0.25s, color 0.25s;
+}
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn:hover { transform: translateY(-2px); }
+.btn:not(.primary):hover { border-color: var(--accent); color: var(--accent); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.js .hero-in { opacity: 0; animation: fadeUp 0.8s var(--ease) forwards; animation-delay: calc(var(--d) * 110ms + 650ms); }
+
+.sec { padding-block: clamp(64px, 11vw, 128px); border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent); }
+.sec-grid { display: grid; grid-template-columns: minmax(0, 180px) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); }
+.sec-label { position: sticky; top: 88px; align-self: start; margin: 0; font-size: 0.9375rem; font-weight: 500; color: var(--accent); }
+.statement {
+  margin: 0 0 clamp(28px, 4.5vw, 48px); max-width: 34ch;
+  font-family: var(--display); font-weight: 500;
+  font-size: clamp(1.4rem, 3.1vw, 2.15rem); line-height: 1.25; letter-spacing: -0.02em;
+}
+.prose { max-width: 62ch; color: var(--muted); }
+.prose p { margin: 0 0 1em; }
+.prose p:last-child { margin-bottom: 0; }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0 32px; margin: 36px 0 0; max-width: 700px; }
+.facts div { padding: 14px 0; border-top: 1px solid var(--border); }
+.facts dt { font-size: 0.8125rem; color: var(--muted); }
+.facts dd { margin: 2px 0 0; }
+
+/* Technical proficiencies */
+.skillgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.skillcard { padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.skillcard h3 { margin: 0 0 10px; font-family: var(--display); font-size: 1.0625rem; font-weight: 600; color: var(--accent); }
+.skillcard p { margin: 0; color: var(--text); font-size: 0.9375rem; line-height: 1.6; }
+
+/* Image Containers - Centered Presentation */
+.shot {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.shot.landscape { aspect-ratio: 16 / 10; }
+.shot.portrait { aspect-ratio: 4 / 5; }
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* displays complete graphic centered without cropping */
+  display: block;
+}
+
+/* Projects Layout */
+.projects { display: grid; gap: 44px; }
+.project {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  padding: clamp(20px, 4vw, 36px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.project-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+.project-gallery .shot {
+  width: 100%;
+}
+.project-content h3 { margin: 0 0 4px; font-family: var(--display); font-weight: 600; font-size: clamp(1.3rem, 2.4vw, 1.7rem); letter-spacing: -0.01em; }
+.project-content .role { margin: 0 0 16px; font-size: 0.9375rem; color: var(--accent); }
+.project-content ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.project-content li { padding-left: 18px; position: relative; color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+.project-content li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.project-content li strong { color: var(--text); font-weight: 600; }
+
+/* Education */
+.res-cols { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 64px); align-items: start; }
+.timeline { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--border); }
+.timeline li { position: relative; padding: 0 0 32px 28px; }
+.timeline li:last-child { padding-bottom: 0; }
+.timeline li::before {
+  content: ""; position: absolute; left: -5px; top: 0.55em; width: 9px; height: 9px;
+  border-radius: 50%; background: var(--bg); border: 2px solid var(--accent);
+}
+.when { margin-bottom: 6px; font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); }
+.timeline h4 { margin: 0; font-family: var(--display); font-size: 1.2rem; font-weight: 600; letter-spacing: -0.01em; }
+.org { margin: 2px 0 10px; color: var(--accent); font-size: 0.9375rem; }
+.timeline ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.timeline li ul li { padding-left: 16px; }
+.timeline li ul li::before { width: 5px; height: 5px; top: 0.6em; }
+.gradfig { margin: 0; }
+.gradfig figcaption { margin-top: 10px; font-size: 0.8125rem; color: var(--muted); }
+
+/* Experience */
+.expcard { padding: clamp(18px, 3vw, 26px); border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+.expcard + .expcard { margin-top: 16px; }
+.expcard h3 { margin: 0; font-family: var(--display); font-size: 1.15rem; font-weight: 600; }
+.expcard .org { margin: 2px 0 2px; }
+.expcard ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+.expcard li { padding-left: 18px; position: relative; color: var(--muted); font-size: 0.9375rem; line-height: 1.6; }
+.expcard li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.expcard li strong { color: var(--text); font-weight: 600; }
+
+/* Contact */
+.mail {
+  display: block; max-width: 100%; white-space: nowrap; overflow-x: auto;
+  font-family: var(--display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+  font-size: clamp(0.9rem, 3.3vw, 2.1rem); padding-bottom: 6px;
+}
+.mail:hover { color: var(--accent); }
+.contact-lines { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 32px; color: var(--muted); }
+.contact-lines a:hover { color: var(--text); }
+
+footer { padding: 32px 0 96px; border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent); font-size: 0.875rem; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+footer a:hover { color: var(--text); }
+
+.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); transition-delay: calc(var(--d, 0) * 80ms); }
+.js .reveal.in { opacity: 1; transform: none; }
+
+@media (max-width: 860px) {
+  .sec-grid, .res-cols { grid-template-columns: minmax(0, 1fr); }
+  .sec-label { position: static; }
+}
+@media (max-width: 600px) {
+  .project-gallery { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .links { gap: 10px; font-size: 0.8rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+  .js .name .ch, .js .hero-in, .js .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <span class="brand">Connor Athanasellis</span>
+    <nav aria-label="Primary">
+      <ul class="links">
+        <li><a href="#profile">Profile</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-hot" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="status hero-in" style="--d:0"><i aria-hidden="true"></i>Open to student engineering roles</div>
+      <h1 class="name" aria-label="Connor Athanasellis">
+        <span class="line">Connor</span>
+        <span class="line">Athanasellis</span>
+      </h1>
+      <p class="lede hero-in" style="--d:1">Mechanical Engineering (Honours) student specialising in parametric CAD, FEA validation, and rapid prototyping.</p>
+      <div class="cta hero-in" style="--d:2">
+        <a class="btn primary" href="#projects">View projects</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="profile">
+    <div class="wrap sec-grid">
+      <h2 class="sec-label">Profile</h2>
+      <div>
+        <p class="statement reveal">Taking mechanical assemblies from concept to validated, physical prototypes.</p>
+        <div class="prose reveal" style="--d:1">
+          <p>Final-year Mechanical Engineering (Honours) student with a strong practical focus on parametric CAD modeling, FEA verification, and additive manufacturing. Experienced in taking complex mechanical assemblies from conceptual user requirements through digital validation, iterative prototyping, and physical testing.</p>
+        </div>
+        <dl class="facts reveal" style="--d:2">
+          <div><dt>Based in</dt><dd>Melbourne, VIC</dd></div>
+          <div><dt>Studying</dt><dd>Bachelor of Engineering (Mechanical) (Honours), RMIT — expected mid‑2027</dd></div>
+          <div><dt>Focus</dt><dd>Parametric CAD, FEA & rapid prototyping</dd></div>
+          <div><dt>Availability</dt><dd>4 coursework units remaining — consistent weekly availability</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="skills">
+    <div class="wrap sec-grid">
+      <h2 class="sec-label">Technical proficiencies</h2>
+      <div class="skillgrid">
+        <div class="skillcard reveal">
+          <h3>CAD & 3D modeling</h3>
+          <p>SolidWorks, Fusion 360, CATIA V5, AutoCAD, parametric design</p>
+        </div>
+        <div class="skillcard reveal" style="--d:1">
+          <h3>Simulation & analysis (CAE)</h3>
+          <p>ANSYS Mechanical (structural FEA), Fluent, SolidWorks Simulation, FluidSIM</p>
+        </div>
+        <div class="skillcard reveal" style="--d:2">
+          <h3>Prototyping & manufacturing</h3>
+          <p>Additive manufacturing (FDM/FFF), slicing (Bambu Studio, PrusaSlicer, Cura), reverse engineering</p>
+        </div>
+        <div class="skillcard reveal" style="--d:3">
+          <h3>Methods & systems</h3>
+          <p>Agile development, stage-gate product cycles, risk & project management, Excel</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="projects">
+    <div class="wrap sec-grid">
+      <h2 class="sec-label">Key engineering projects</h2>
+      <div class="projects">
+
+        <article class="project reveal">
+          <div class="project-gallery">
+            <figure class="shot landscape">
+              <img src="/resume/bosch/images/project-build-a-bike.jpg" alt="Build a Bike CAD rendering" onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src='images/project-build-a-bike.jpg';}">
+            </figure>
+            <figure class="shot landscape">
+              <img src="/resume/bosch/images/project-build-a-bike-2.jpg" alt="Build a Bike prototype presentation" onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src='images/project-build-a-bike-2.jpg';}">
+            </figure>
+          </div>
+          <div class="project-content">
+            <h3>Build a Bike — Parametric Custom Bicycle Design</h3>
+            <p class="role">Honours Capstone Project Lead, RMIT</p>
+            <ul>
+              <li><strong>Automated parametric framework:</strong> engineered an end-to-end parametric workflow mapping individual biometric measurements directly into customised bicycle frame geometries.</li>
+              <li><strong>Structural FEA verification:</strong> conducted finite element analysis in ANSYS Mechanical across key load cases, validating compliance against ISO 4210 structural and fatigue limits.</li>
+              <li><strong>Additive & prefab architecture:</strong> designed geometry optimised for hybrid manufacturing, combining pre-validated 3D printed metal lugs with prefabricated standard tubing.</li>
+              <li><strong>Physical prototyping:</strong> produced scaled 3D printed physical models to verify clearance, aesthetic proportions, and mechanical fit prior to production specification.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="project reveal" style="--d:1">
+          <div class="project-gallery">
+            <figure class="shot portrait">
+              <img src="/resume/bosch/images/project-reverse-engineering.jpg" alt="Reverse-engineered antique brass mortise key mechanism" onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src='images/project-reverse-engineering.jpg';}">
+            </figure>
+            <figure class="shot portrait">
+              <img src="/resume/bosch/images/project-reverse-engineering-2.jpg" alt="Parametric CAD reproduction of key" onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src='images/project-reverse-engineering-2.jpg';}">
+            </figure>
+          </div>
+          <div class="project-content">
+            <h3>Reverse Engineering & Precision Reproduction</h3>
+            <p class="role">Personal engineering project</p>
+            <ul>
+              <li><strong>Precision metrology:</strong> disassembled an unkeyed antique brass mortise mechanism and measured internal gate clearances and lever throw using dial calipers.</li>
+              <li><strong>Parametric CAD modeling:</strong> reconstructed complete internal kinematics and custom key geometry parametrically in Fusion 360.</li>
+              <li><strong>First-iteration success:</strong> 3D printed a functional replacement key on the initial run, achieving smooth engagement and throw with zero manual post-machining.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="project reveal" style="--d:2">
+          <div class="project-gallery">
+            <figure class="shot portrait">
+              <img src="/resume/bosch/images/project-co2-drag-vehicle.jpg" alt="CO2 high-speed drag vehicle launch rig" onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src='images/project-co2-drag-vehicle.jpg';}">
+            </figure>
+            <figure class="shot landscape">
+              <img src="/resume/bosch/images/project-co2-drag-vehicle-2.jpg" alt="Aerodynamic vehicle body design" onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src='images/project-co2-drag-vehicle-2.jpg';}">
+            </figure>
+          </div>
+          <div class="project-content">
+            <h3>CO₂ High-Speed Drag Vehicle</h3>
+            <p class="role">RMIT Competition — Team Lead & Manufacturing</p>
+            <ul>
+              <li><strong>Iterative aerodynamic design:</strong> co-designed a regulation-compliant miniature drag vehicle in SolidWorks across 10+ iterations, running airflow simulations to minimise drag coefficient and frontal area.</li>
+              <li><strong>Manufacturing & toolpath optimisation:</strong> spearheaded slicer settings, orientation, and infill tuning to maximise structural strength against launch stresses while minimising mass.</li>
+              <li><strong>Top performance:</strong> clocked 0.670 seconds on a 20 m track (average speed 116 km/h), the fastest record during test runs.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="education">
+    <div class="wrap sec-grid">
+      <h2 class="sec-label">Education</h2>
+      <div class="res-cols">
+        <ol class="timeline">
+          <li class="reveal">
+            <div class="when">Expected mid-2027</div>
+            <h4>Bachelor of Engineering (Mechanical) (Honours)</h4>
+            <p class="org">RMIT University</p>
+            <ul>
+              <li>Honours Capstone Project (Parts A & B) successfully completed.</li>
+              <li>4 coursework units remaining across the final 2 semesters, enabling substantial weekly work availability.</li>
+              <li>Relevant coursework: Mechanics of Machines, Finite Element Analysis, Solid Mechanics, Heat Transfer, Systems Engineering, Risk & Project Management.</li>
+            </ul>
+          </li>
+          <li class="reveal" style="--d:1">
+            <div class="when">Conferred 2024</div>
+            <h4>Advanced Diploma of Engineering (Mechanical)</h4>
+            <p class="org">RMIT University</p>
+            <ul>
+              <li>Articulated 144 credit points directly into the Bachelor program.</li>
+              <li>Practical focus on mechanical system design, CAD/CAE, fluid dynamics, and sustainable engineering practices.</li>
+            </ul>
+          </li>
+        </ol>
+        <figure class="shot landscape gradfig reveal" style="--d:2">
+          <img src="/resume/bosch/images/grad-photo.jpg" alt="Graduation photo, Advanced Diploma of Engineering" onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src='images/grad-photo.jpg';}">
+          <figcaption>Advanced Diploma of Engineering, conferred 2024</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="experience">
+    <div class="wrap sec-grid">
+      <h2 class="sec-label">Experience</h2>
+      <div>
+        <div class="expcard reveal">
+          <h3>Sales Specialist & Acting Store Manager</h3>
+          <p class="org">Men's Suit Warehouse — June 2022 to present</p>
+          <ul>
+            <li><strong>Store operations & keyholder duties:</strong> entrusted with store opening/closing, daily register balancing, inventory management, and escalation handling during manager absence.</li>
+            <li><strong>Client consultation & group workflow:</strong> managed high-volume appointments for wedding groups, coordinating custom alterations, orders, and tight delivery timelines.</li>
+            <li><strong>Logistics & communication:</strong> liaised directly with warehouse teams and suppliers to resolve supply discrepancies and ensure on-time delivery.</li>
+          </ul>
+        </div>
+        <div class="expcard reveal" style="--d:1">
+          <h3>Retail Sales Assistant</h3>
+          <p class="org">Expedition Apparel — March 2021 to June 2022</p>
+          <ul>
+            <li><strong>Customer engagement & operations:</strong> developed strong communication and consultative selling skills in a fast-paced retail environment while assisting with stock inventory management.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="contact">
+    <div class="wrap sec-grid">
+      <h2 class="sec-label">Contact</h2>
+      <div>
+        <p class="statement reveal">Happy to speak with your team again — reach out any time.</p>
+        <a class="mail u reveal" style="--d:1" href="mailto:athanasellisconnor@gmail.com">athanasellisconnor@gmail.com</a>
+        <div class="contact-lines reveal" style="--d:2">
+          <a class="u" href="tel:+61420358521">0420 358 521</a>
+          <span>Melbourne, VIC</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Connor Athanasellis</span>
+    <a class="u" href="#top">Back to top</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (!reduce) {
+    var idx = 0;
+    document.querySelectorAll('.name .line').forEach(function (line) {
+      var text = line.textContent;
+      line.textContent = '';
+      line.setAttribute('aria-hidden', 'true');
+      text.split('').forEach(function (c) {
+        var s = document.createElement('span');
+        s.className = 'ch';
+        s.style.setProperty('--i', idx++);
+        s.textContent = c;
+        line.appendChild(s);
+      });
+      idx += 3;
+    });
+  }
+
+  var bar = document.getElementById('progress');
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var max = root.scrollHeight - window.innerHeight;
+      bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(window.scrollY / max, 1) : 0) + ')';
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+    reveals.forEach(function (el) { ro.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('.links a');
+  if ('IntersectionObserver' in window) {
+    var no = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) {
+          if (a.getAttribute('href') === '#' + e.target.id) a.setAttribute('aria-current', 'true');
+          else a.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('main section[id]').forEach(function (s) { no.observe(s); });
+  }
+
+  if (finePointer && !reduce) {
+    var hero = document.querySelector('.hero');
+    var raf = 0;
+    hero.addEventListener('pointerenter', function () { hero.classList.add('hot'); });
+    hero.addEventListener('pointerleave', function () { hero.classList.remove('hot'); });
+    hero.addEventListener('pointermove', function (e) {
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        var r = hero.getBoundingClientRect();
+        hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        raf = 0;
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
